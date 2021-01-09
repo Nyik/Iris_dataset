@@ -7,6 +7,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 import altair as alt
 from PIL import Image
+import os
 
 st.write("""
 # Simple Iris Flower Prediction App
@@ -37,61 +38,60 @@ def user_input_features():
 df = user_input_features()
 
 st.subheader('User Input parameters')
-st.write(df)
+st.write(os.getcwd())
+st.write(os.listdir())
 
-data = pd.read_csv("csv/iris.csv")
-def changeNum(row):
-    if row == 'Iris-setosa':
-        return 1
-    elif row == 'Iris-versicolor':
-        return 0
-    else:
-        return 2
+# data = pd.read_csv("csv/iris.csv")
 
-data['Species_Target'] = data['Species'].apply(changeNum)
+# def changeNum(row):
+#     if row == 'Iris-setosa':
+#         return 1
+#     elif row == 'Iris-versicolor':
+#         return 0
+#     else:
+#         return 2
 
-# X = data
+# data['Species_Target'] = data['Species'].apply(changeNum)
+
+
+
+# st.subheader('EDA(Exploratory Data Analysis)')
+
+# for i in ['SepalLengthCm','SepalWidthCm','PetalLengthCm','PetalWidthCm']:
+#     f, ax = plt.subplots(figsize=(7, 5))
+#     # ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
+#     ax = sns.swarmplot(y=i, x="Species", data=data)
+#     st.pyplot(f)
+
+# f, ax = plt.subplots(figsize=(7, 5))
+# ax =plt.scatter(data['PetalLengthCm'], data['PetalWidthCm'], c=data['Species_Target'])
+# plt.xlabel('Sepal Length', fontsize=18)
+# plt.ylabel('Sepal Width', fontsize=18)
+# plt.legend()
+# st.pyplot(f)
+
+# corrmat = data.corr()
+# f, ax = plt.subplots(figsize=(7, 5))
+# ax = sns.heatmap(corrmat, annot = True, vmax=1, square=True)
+# st.pyplot(f)
+
+# X = data.drop(columns=['Id','Species_Target','Species'])
+# Y = data.Species_Target
 # st.write(X)
-# Y = iris.target
+# clf = RandomForestClassifier()
+# clf.fit(X, Y)
 
-st.subheader('EDA(Exploratory Data Analysis)')
+# prediction = clf.predict(df)
+# prediction_proba = clf.predict_proba(df)
 
-for i in ['SepalLengthCm','SepalWidthCm','PetalLengthCm','PetalWidthCm']:
-    f, ax = plt.subplots(figsize=(7, 5))
-    # ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
-    ax = sns.swarmplot(y=i, x="Species", data=data)
-    st.pyplot(f)
+# st.subheader('Class labels and their corresponding index number')
+# st.write(data.Species)
 
-f, ax = plt.subplots(figsize=(7, 5))
-ax =plt.scatter(data['PetalLengthCm'], data['PetalWidthCm'], c=data['Species_Target'])
-plt.xlabel('Sepal Length', fontsize=18)
-plt.ylabel('Sepal Width', fontsize=18)
-plt.legend()
-st.pyplot(f)
+# st.subheader('Prediction')
+# st.write(data.Species_Target[prediction])
 
-corrmat = data.corr()
-f, ax = plt.subplots(figsize=(7, 5))
-ax = sns.heatmap(corrmat, annot = True, vmax=1, square=True)
-st.pyplot(f)
-
-X = data.drop(columns=['Id','Species_Target','Species'])
-Y = data.Species_Target
-st.write(X)
-clf = RandomForestClassifier()
-clf.fit(X, Y)
-
-prediction = clf.predict(df)
-prediction_proba = clf.predict_proba(df)
-
-st.subheader('Class labels and their corresponding index number')
-st.write(data.Species)
-
-st.subheader('Prediction')
-st.write(data.Species_Target[prediction])
-#st.write(prediction)
-
-st.subheader('Prediction Probability')
-st.write(prediction_proba)
+# st.subheader('Prediction Probability')
+# st.write(prediction_proba)
 
 
 

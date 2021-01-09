@@ -41,7 +41,7 @@ st.subheader('User Input parameters')
 st.write(os.getcwd())
 st.write(os.listdir())
 
-# data = pd.read_csv("csv/iris.csv")
+data = pd.read_csv("csv/Iris.csv")
 
 # def changeNum(row):
 #     if row == 'Iris-setosa':

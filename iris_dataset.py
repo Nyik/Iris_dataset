@@ -4,10 +4,11 @@ import base64
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
+# from sklearn.ensemble import RandomForestClassifier
 import altair as alt
 from PIL import Image
 import os
+import pickle 
 
 st.write("""
 # Simple Iris Flower Prediction App
@@ -38,8 +39,7 @@ def user_input_features():
 df = user_input_features()
 
 st.subheader('User Input parameters')
-# st.write(os.getcwd())
-# st.write(os.listdir())
+st.write(df)
 
 data = pd.read_csv("csv/Iris.csv")
 
@@ -55,43 +55,50 @@ data['Species_Target'] = data['Species'].apply(changeNum)
 
 
 
-st.subheader('EDA(Exploratory Data Analysis)')
+# st.subheader('EDA(Exploratory Data Analysis)')
 
-for i in ['SepalLengthCm','SepalWidthCm','PetalLengthCm','PetalWidthCm']:
-    f, ax = plt.subplots(figsize=(7, 5))
-    # ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
-    ax = sns.swarmplot(y=i, x="Species", data=data)
-    st.pyplot(f)
+# for i in ['SepalLengthCm','SepalWidthCm','PetalLengthCm','PetalWidthCm']:
+#     f, ax = plt.subplots(figsize=(7, 5))
+#     # ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
+#     ax = sns.swarmplot(y=i, x="Species", data=data)
+#     st.pyplot(f)
 
-f, ax = plt.subplots(figsize=(7, 5))
-ax =plt.scatter(data['PetalLengthCm'], data['PetalWidthCm'], c=data['Species_Target'])
-plt.xlabel('Sepal Length', fontsize=18)
-plt.ylabel('Sepal Width', fontsize=18)
-plt.legend()
-st.pyplot(f)
+# f, ax = plt.subplots(figsize=(7, 5))
+# ax =plt.scatter(data['PetalLengthCm'], data['PetalWidthCm'], c=data['Species_Target'])
+# plt.xlabel('Sepal Length', fontsize=18)
+# plt.ylabel('Sepal Width', fontsize=18)
+# plt.legend()
+# st.pyplot(f)
 
-corrmat = data.corr()
-f, ax = plt.subplots(figsize=(7, 5))
-ax = sns.heatmap(corrmat, annot = True, vmax=1, square=True)
-st.pyplot(f)
+# corrmat = data.corr()
+# f, ax = plt.subplots(figsize=(7, 5))
+# ax = sns.heatmap(corrmat, annot = True, vmax=1, square=True)
+# st.pyplot(f)
 
 X = data.drop(columns=['Id','Species_Target','Species'])
 Y = data.Species_Target
-st.write(X)
-clf = RandomForestClassifier()
-clf.fit(X, Y)
+# st.write(X)
+# clf = RandomForestClassifier()
+# clf.fit(X, Y)
+load_clf = pickle.load(open('iris_clf.pkl', 'rb'))
 
-prediction = clf.predict(df)
-prediction_proba = clf.predict_proba(df)
+prediction = load_clf.predict(df)
+prediction_proba = load_clf.predict_proba(df)
 
-st.subheader('Class labels and their corresponding index number')
-st.write(data.Species)
+# st.subheader('Class labels and their corresponding index number')
+# st.write(data.Species)
 
 st.subheader('Prediction')
-st.write(data.Species_Target[prediction])
+iris_species = np.array(['Versicolor','Setosa','Virginica'])
+st.write(iris_species[prediction])
 
 st.subheader('Prediction Probability')
 st.write(prediction_proba)
+
+st.write('There are  ' + str(prediction_proba[0][0]) + ' chance the flower is Versicolor')
+st.write('There are  ' + str(prediction_proba[0][1]) + ' chance the flower is Setosa')
+st.write('There are  ' + str(prediction_proba[0][2]) + ' chance the flower is Virginica')
+
 
 
 

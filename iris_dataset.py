@@ -14,7 +14,6 @@ st.write("""
 # Simple Iris Flower Prediction App
 
 This app predicts the **Iris flower** type!
-
 ***
 """)
 
@@ -22,8 +21,18 @@ image = Image.open('img/flowers.jpeg')
 
 st.image(image, use_column_width=True)
 
-st.sidebar.header('User Input Parameters')
+st.write("""
+*The Iris flower data set or Fisher's Iris data set is a multivariate data set introduced by the British statistician, eugenicist, and biologist Ronald Fisher in his 1936 paper The use of multiple measurements in taxonomic problems as an example of linear discriminant analysis*
 
+*Four features were measured from each sample: the length and the width of the sepals and petals, in centimeters. Based on the combination of these four features, Fisher developed a linear discriminant model to distinguish the species from each other.*  
+
+For more information [Wikipedia](https://en.wikipedia.org/wiki/Iris_flower_data_set).
+
+You will now get to see which features get which flower(Versicolor,Setosa,Virginica) with the sliders in the sidebar 
+""")
+
+st.sidebar.header('User Input Parameters')
+st.sidebar.markdown('Play around with the features and see which flower you get')
 def user_input_features():
     sepal_length = st.sidebar.slider('Sepal length', 4.3, 7.9, 5.4)
     sepal_width = st.sidebar.slider('Sepal width', 2.0, 4.4, 3.4)
@@ -90,14 +99,21 @@ prediction_proba = load_clf.predict_proba(df)
 
 st.subheader('Prediction')
 iris_species = np.array(['Versicolor','Setosa','Virginica'])
-st.write(iris_species[prediction])
+# st.write(iris_species[prediction])
+
+# st.write(iris_species[prediction][0])
+
+image = Image.open(f'img/{iris_species[prediction][0]}.jpeg')
+
+st.image(image)
+
 
 st.subheader('Prediction Probability')
-st.write(prediction_proba)
+# st.write(prediction_proba)
 
-st.write('There are  ' + str(prediction_proba[0][0]) + ' chance the flower is Versicolor')
-st.write('There are  ' + str(prediction_proba[0][1]) + ' chance the flower is Setosa')
-st.write('There are  ' + str(prediction_proba[0][2]) + ' chance the flower is Virginica')
+st.write('There is  ' + str(int(prediction_proba[0][0]*100)) + "% chance the flower is Versicolor")
+st.write('There are  ' + str(int(prediction_proba[0][1]*100)) + '% chance the flower is Setosa')
+st.write('There are  ' + str(int(prediction_proba[0][2]*100)) + '% chance the flower is Virginica')
 
 
 
